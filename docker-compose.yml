@@ -1,4 +1,3 @@
-version: '3'
 services:
   line-provider:
     build:
@@ -17,6 +16,8 @@ services:
       - "8081:8081"
     environment:
       - PYTHONPATH=/app
+    env_file:
+      - .env
     depends_on:
       - db
       - line-provider
