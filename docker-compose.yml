@@ -1,0 +1,31 @@
+version: '3'
+services:
+  line-provider:
+    build:
+      context: .
+      dockerfile: ./line-provider/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - PYTHONPATH=/app
+
+  bet-maker:
+    build:
+      context: .
+      dockerfile: ./bet-maker/Dockerfile
+    ports:
+      - "8081:8081"
+    environment:
+      - PYTHONPATH=/app
+    depends_on:
+      - db
+      - line-provider
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
